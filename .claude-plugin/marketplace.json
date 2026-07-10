@@ -1,0 +1,15 @@
+{
+  "name": "wakeflow",
+  "description": "wakeflow 플러그인을 배포하는 self-marketplace (단일 플러그인).",
+  "owner": {
+    "name": "Kim Minkyoung",
+    "email": "kim.minkyoung.dev@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "wakeflow",
+      "source": "./",
+      "description": "task/issue 기반 개인 작업 흐름 관리 — /wakeflow:task, /wakeflow:issue 서브커맨드와 SessionStart 훅"
+    }
+  ]
+}

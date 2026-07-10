@@ -1,0 +1,17 @@
+{
+	"description": "wakeflow 플러그인 훅: 세션 시작 시 현재 git 브랜치에 연결된 task를 찾아 컨텍스트로 주입합니다.",
+	"hooks": {
+		"SessionStart": [
+			{
+				"matcher": "startup|resume|clear",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks-handlers/active-task.sh\"",
+						"statusMessage": "현재 브랜치의 task 확인 중"
+					}
+				]
+			}
+		]
+	}
+}
