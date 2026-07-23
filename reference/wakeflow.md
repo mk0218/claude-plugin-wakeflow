@@ -39,12 +39,13 @@ Plugin (`${CLAUDE_PLUGIN_ROOT}`):
 - `reference/wakeflow.md` — this document
 - `templates/task.md` — task README template
 - `templates/issue.md` — issue template
-- `commands/task/` — task subcommands. Each doc is its own entry point (`/task:<sub>`) and injects the
-  shared rules at the top via `` !`cat ${CLAUDE_PLUGIN_ROOT}/rules/…` ``: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`.
+- `commands/task/` — task subcommands. Each doc is its own entry point (`/task:<sub>`) with the shared
+  rules **inlined** at the top: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`. (The rules —
+  worktree re-resolve, target task heuristic, readability, this-doc pointer — are maintained as SSOT
+  in the source tuning and inlined into each command when packaged; marketplace installs cannot read
+  a separate rules file via `!cat` because the plugin cache path is outside the working directory.)
   `commands/task.md` (bare `/task`) loads the active task's context into the session — a supplement to the
   SessionStart hook, distinct from the `/task:todo` user-facing summary.
-- `rules/` — shared rules the subcommands inject (SSOT). `worktree.md` (linked-worktree re-resolve),
-  `target.md` (target task heuristic), `wakeflow-ref.md` (pointer to this doc).
 - `commands/issue/` — issue subcommands (`create`·`start`·`list`·`help`). Each doc is its own entry
   point (`/issue:<sub>`). There is no dispatcher (`issue.md`) and no bare `/issue`.
 - `hooks/hooks.json` + `hooks-handlers/active-task.sh` — SessionStart hook; finds the task matching the current branch and injects an `[active task]` pointer into context
