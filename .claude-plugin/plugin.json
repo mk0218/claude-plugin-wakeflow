@@ -1,7 +1,7 @@
 {
   "name": "wakeflow",
   "description": "task/issue 기반 개인 작업 흐름 관리 — /wakeflow:task, /wakeflow:issue 서브커맨드와 SessionStart 훅",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Kim Minkyoung",
     "email": "kim.minkyoung.dev@gmail.com"
