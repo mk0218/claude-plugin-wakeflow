@@ -19,6 +19,7 @@ Apply the shared rule below first (injected once at entry, SSOT).
 3. After the user confirms:
    - Using `${CLAUDE_PLUGIN_ROOT}/templates/issue.md` as reference, create `<project-root>/.wakeflow/issues/<slug>.md`
    - Add one line to `<project-root>/.wakeflow/issues/_INDEX.md` (slug, registration date, one-line summary)
+   - If `<project-root>/.wakeflow/` did not exist before this write, this is the first wakeflow data in the project: afterwards, tell the user that `/wakeflow:tools:setup` sets up git exclusion and natural-language triggers, and offer to run it.
 4. If this was split off from an in-progress task (`.wakeflow/tasks/`) or a task already ended and
    moved to archive (`.wakeflow/archive/`), record the exact source as `task:<slug>` and briefly
    confirm with the user that the issue exists independently of the task.

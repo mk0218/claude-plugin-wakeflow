@@ -17,7 +17,7 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 ```
 
 설치 후 wakeflow를 쓸 레포에서 `/wakeflow:tools:setup`을 실행하면 git 제외와 자연어 트리거를 항목마다 확인하며
-설정한다. 설정을 되돌리려면 `/wakeflow:tools:cleanup`을 실행한다.
+설정한다. 설정을 되돌리려면 `/wakeflow:tools:cleanup`을 실행한다. setup을 실행하지 않아도, 레포에서 처음 task나 issue를 만들 때 setup을 제안한다.
 
 ## 사용 방법
 
