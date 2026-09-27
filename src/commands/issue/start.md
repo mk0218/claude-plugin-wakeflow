@@ -12,7 +12,7 @@ Apply the shared rule below first (injected once at entry, SSOT).
 
 Start a *new task* to handle the given issue.
 
-1. Read `<project-root>/.claude/local/issues/<slug>.md` to review the issue content.
+1. Read `<project-root>/.wakeflow/issues/<slug>.md` to review the issue content.
 2. From here, follow `${CLAUDE_PLUGIN_ROOT}/commands/task/start.md` (use the issue content as a seed; record the
    issue slug under the README "처리한 issue" section).
 3. **Leave the issue in place** — resolution happens separately, typically auto-cleaned on `/task:end`.

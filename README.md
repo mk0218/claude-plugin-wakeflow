@@ -48,11 +48,11 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 
 ## task/issue 데이터의 git 무시 (권장)
 
-task/issue/archive 문서는 프로젝트의 `<project-root>/.claude/local/` 아래에 쌓인다. 이 개인 작업 문서를
-팀 레포 히스토리에 올리고 싶지 않다면, `.gitignore` 또는 `.git/local/exclude`(권장)에 추가한다.
+task/issue/archive 문서는 프로젝트의 `<project-root>/.wakeflow/` 아래에 쌓인다. 이 개인 작업 문서를
+팀 레포 히스토리에 올리고 싶지 않다면, `.gitignore` 또는 `.git/info/exclude`(권장)에 추가한다.
 
 ```
-printf '/.claude/local/\n' >> .git/info/exclude
+printf '/.wakeflow/\n' >> .git/info/exclude
 ```
 
 > [!NOTE]

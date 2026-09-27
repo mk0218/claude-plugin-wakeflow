@@ -7,11 +7,11 @@ description: task의 진행 상황(TODO·결정·로그 등)을 README에 반영
 
 Apply the shared rules below first (injected once at entry, SSOT).
 
-**Worktree rule** — task/issue/archive docs (`.claude/local/`'s `tasks/`·`issues/`·`archive/`) exist
+**Worktree rule** — task/issue/archive docs (`.wakeflow/`'s `tasks/`·`issues/`·`archive/`) exist
 **only in the main worktree**. A linked worktree (created via `git worktree add`) is usually branched
 off a ref that predates these docs, so its own copy is stale or absent. Therefore, when the current
 working directory is a linked worktree, re-resolve `<project-root>` to the **main worktree** (the first
-entry of `git worktree list`) and read/write under that `.claude/local/` — never the linked worktree's
+entry of `git worktree list`) and read/write under that `.wakeflow/` — never the linked worktree's
 own path.
 
 - Read-side (`list`·`update`·`todo`): re-resolve **before** locating the task. Otherwise you read the
@@ -35,7 +35,7 @@ it (`end` falls through to its unregistered branch).
 
 For `end`, the confirmation message must **always include the option *"위 어느 task도 아님 (미등록 task로
 처리)"*** so the user can fall through — even when there is only a single task. If
-`<project-root>/.claude/local/tasks/` is empty → the unregistered branch.
+`<project-root>/.wakeflow/tasks/` is empty → the unregistered branch.
 
 **Readability rule** — task/issue/archive documents are read by a human in a markdown viewer, not
 just stored. Optimize the *rendered* view for scanning, even when it makes the raw markdown denser.

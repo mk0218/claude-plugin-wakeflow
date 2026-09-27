@@ -7,7 +7,7 @@ set -euo pipefail
 branch=$(git branch --show-current 2>/dev/null) || exit 0
 [ -n "$branch" ] || exit 0
 
-tasks_dir=".claude/local/tasks"
+tasks_dir=".wakeflow/tasks"
 [ -d "$tasks_dir" ] || exit 0
 
 for readme in "$tasks_dir"/*/README.md; do

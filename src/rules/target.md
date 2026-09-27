@@ -12,4 +12,4 @@ it (`end` falls through to its unregistered branch).
 
 For `end`, the confirmation message must **always include the option *"위 어느 task도 아님 (미등록 task로
 처리)"*** so the user can fall through — even when there is only a single task. If
-`<project-root>/.claude/local/tasks/` is empty → the unregistered branch.
+`<project-root>/.wakeflow/tasks/` is empty → the unregistered branch.

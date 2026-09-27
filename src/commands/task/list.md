@@ -12,7 +12,7 @@ Apply the shared rule below first (injected once at entry, SSOT).
 
 `list` / `ls`.
 
-List the subdirectories under `<project-root>/.claude/local/tasks/`. For each task:
+List the subdirectories under `<project-root>/.wakeflow/tasks/`. For each task:
 
 - One-line natural-language summary (based on the README title / one-line summary)
 - One-line natural-language progress (based on TODO checkbox progress)

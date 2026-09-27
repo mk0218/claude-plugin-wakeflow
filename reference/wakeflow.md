@@ -16,10 +16,10 @@ Personal work is managed as Tasks (in-progress units) and Issues (split-off to-d
 ## Directory Layout
 
 Task docs live only in the **main worktree**. Linked worktrees (from `git worktree add`) branch off a ref
-that usually predates these docs, so their own `.claude/local/tasks/` is stale or absent — always resolve
+that usually predates these docs, so their own `.wakeflow/tasks/` is stale or absent — always resolve
 the main worktree (first entry of `git worktree list`) and read/write task docs there.
 
-Per-project (`<project-root>/.claude/local/`):
+Per-project (`<project-root>/.wakeflow/`):
 
 - `tasks/<slug>/` — directory for an in-progress task
   - `README.md` — task body (default). Split incrementally into separate files (`TODO.md`, `PR.md`, `NOTES.md`, etc.) as sections grow large.
@@ -28,8 +28,8 @@ Per-project (`<project-root>/.claude/local/`):
 - `issues/_INDEX.md` — issue index
 - `archive/<slug>/` — finished task folder — compressed notes `SUMMARY.md` + original doc `ARCHIVED.md` (subtask directories move here too if the task was a branch)
 - `archive/_ARCHIVE.md` — archive index
-- `docs/` — read-only reference material (domain/backend/frontend notes, etc.), **not task/issue/archive
-  data**. Unlike the above, may exist independently per worktree — a linked worktree can have docs the
+- (not under `.wakeflow/`) `<project-root>/.claude/local/docs/` — read-only reference material
+  (domain/backend/frontend notes, etc.), **not task/issue/archive data**. Unlike the above, may exist independently per worktree — a linked worktree can have docs the
   main worktree lacks. Always check both the current and main worktree's `docs/` when looking something
   up here; if a doc exists only in the current (linked) worktree, flag it as worktree-local rather than
   shared.

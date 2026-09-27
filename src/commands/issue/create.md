@@ -17,8 +17,8 @@ Apply the shared rule below first (injected once at entry, SSOT).
 2. From the extracted/summarized content, organize title, background, to-dos, and references, show them
    to the user, and propose an English slug (kebab-case, short and clear).
 3. After the user confirms:
-   - Using `${CLAUDE_PLUGIN_ROOT}/templates/issue.md` as reference, create `<project-root>/.claude/local/issues/<slug>.md`
-   - Add one line to `<project-root>/.claude/local/issues/_INDEX.md` (slug, registration date, one-line summary)
-4. If this was split off from an in-progress task (`.claude/local/tasks/`) or a task already ended and
-   moved to archive (`.claude/local/archive/`), record the exact source as `task:<slug>` and briefly
+   - Using `${CLAUDE_PLUGIN_ROOT}/templates/issue.md` as reference, create `<project-root>/.wakeflow/issues/<slug>.md`
+   - Add one line to `<project-root>/.wakeflow/issues/_INDEX.md` (slug, registration date, one-line summary)
+4. If this was split off from an in-progress task (`.wakeflow/tasks/`) or a task already ended and
+   moved to archive (`.wakeflow/archive/`), record the exact source as `task:<slug>` and briefly
    confirm with the user that the issue exists independently of the task.
