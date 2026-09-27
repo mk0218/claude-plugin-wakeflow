@@ -28,11 +28,6 @@ Per-project (`<project-root>/.wakeflow/`):
 - `issues/_INDEX.md` — issue index
 - `archive/<slug>/` — finished task folder — compressed notes `SUMMARY.md` + original doc `ARCHIVED.md` (subtask directories move here too if the task was a branch)
 - `archive/_ARCHIVE.md` — archive index
-- (not under `.wakeflow/`) `<project-root>/.claude/local/docs/` — read-only reference material
-  (domain/backend/frontend notes, etc.), **not task/issue/archive data**. Unlike the above, may exist independently per worktree — a linked worktree can have docs the
-  main worktree lacks. Always check both the current and main worktree's `docs/` when looking something
-  up here; if a doc exists only in the current (linked) worktree, flag it as worktree-local rather than
-  shared.
 
 Plugin (`${CLAUDE_PLUGIN_ROOT}`):
 
