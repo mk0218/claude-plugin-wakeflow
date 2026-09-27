@@ -7,7 +7,11 @@ set -euo pipefail
 branch=$(git branch --show-current 2>/dev/null) || exit 0
 [ -n "$branch" ] || exit 0
 
-tasks_dir=".wakeflow/tasks"
+# Task docs live only in the main worktree (first entry of `git worktree list`).
+main_root=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{print substr($0, 10); exit}') || exit 0
+[ -n "$main_root" ] || exit 0
+
+tasks_dir="$main_root/.wakeflow/tasks"
 [ -d "$tasks_dir" ] || exit 0
 
 for readme in "$tasks_dir"/*/README.md; do
