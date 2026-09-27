@@ -57,6 +57,8 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 | `/wakeflow:tools:cleanup` | setup이 추가한 설정 제거 (항목마다 확인) |
 | `/wakeflow:tools:migrate` | 옛 위치(`.claude/local/`)의 데이터를 `.wakeflow/`로 이동 |
 
+예전 버전에서 `.claude/local/`에 쌓인 데이터가 있으면 세션 시작 시 훅이 알려 주고, Claude가 migrate 실행을 제안한다.
+
 ## task/issue 데이터의 git 무시 (권장)
 
 task/issue/archive 문서는 프로젝트의 `<project-root>/.wakeflow/` 아래에 쌓인다. 이 개인 작업 문서를

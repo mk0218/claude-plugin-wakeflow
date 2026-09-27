@@ -1,5 +1,5 @@
 {
-	"description": "wakeflow 플러그인 훅: 세션 시작 시 현재 git 브랜치에 연결된 task를 찾아 컨텍스트로 주입합니다.",
+	"description": "wakeflow 플러그인 훅: 세션 시작 시 현재 git 브랜치에 연결된 task를 찾아 컨텍스트로 주입하고, 옛 위치(.claude/local/)에 데이터가 남아 있으면 이전을 안내합니다.",
 	"hooks": {
 		"SessionStart": [
 			{
@@ -9,6 +9,11 @@
 						"type": "command",
 						"command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks-handlers/active-task.sh\"",
 						"statusMessage": "현재 브랜치의 task 확인 중"
+					},
+					{
+						"type": "command",
+						"command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks-handlers/legacy-data.sh\"",
+						"statusMessage": "옛 wakeflow 데이터 확인 중"
 					}
 				]
 			}

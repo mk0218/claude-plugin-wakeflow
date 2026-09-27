@@ -44,6 +44,7 @@ Plugin (`${CLAUDE_PLUGIN_ROOT}`):
   `.wakeflow/` and the natural-language trigger block in `~/.claude/CLAUDE.md`), `cleanup` (remove what
   `setup` added), and `migrate` (move legacy data from `.claude/local/` to `.wakeflow/`).
 - `hooks/hooks.json` + `hooks-handlers/active-task.sh` — SessionStart hook; finds the task matching the current branch and injects an `[active task]` pointer into context
+- `hooks-handlers/legacy-data.sh` — SessionStart hook; if legacy data remains under `.claude/local/`, injects a notice to offer `/wakeflow:tools:migrate`
 - `commands/` is generated — do not edit it. The sources are `src/commands/` (a line
   `<!-- include: <name> -->` marks where a shared rule goes) and `src/rules/` (the shared rules:
   worktree re-resolve, target task heuristic, readability, this-doc pointer, setup markers). `scripts/build`
