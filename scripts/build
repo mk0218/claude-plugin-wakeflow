@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# build — generate commands/ from src/commands/, expanding shared rules from src/rules/.
+#
+# Usage:  scripts/build           regenerate commands/
+#         scripts/build --check   exit 1 if commands/ differs from what the sources generate
+#
+# In a source command, a line consisting only of `<!-- include: <name> -->` is replaced by
+# the body of src/rules/<name>.md. Each generated file gets a one-line "generated" notice
+# right after its front matter.
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SRC="$ROOT/src/commands"
+RULES="$ROOT/src/rules"
+OUT="$ROOT/commands"
+
+mode="build"
+case "${1:-}" in
+  "") ;;
+  --check) mode="check" ;;
+  *) printf 'usage: scripts/build [--check]\n' >&2; exit 2 ;;
+esac
+
+render() {
+  local rel="$1"
+  awk -v rules="$RULES" -v rel="$rel" '
+    NR == 1 && $0 == "---" { in_fm = 1; print; next }
+    in_fm && $0 == "---" {
+      in_fm = 0; print
+      print "<!-- generated from src/commands/" rel " by scripts/build; edit the source, not this file -->"
+      next
+    }
+    match($0, /^<!-- include: [a-z0-9-]+ -->$/) {
+      name = substr($0, 15, length($0) - 18)
+      file = rules "/" name ".md"
+      if ((getline line < file) <= 0) { print "unknown rule: " name " in " rel > "/dev/stderr"; exit 1 }
+      do { print line } while ((getline line < file) > 0)
+      close(file)
+      next
+    }
+    { print }
+  ' "$SRC/$rel"
+}
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+(cd "$SRC" && find . -name '*.md' -type f | sed 's#^\./##' | sort) | while read -r rel; do
+  mkdir -p "$tmp/$(dirname "$rel")"
+  render "$rel" > "$tmp/$rel"
+done
+
+if [[ "$mode" == "check" ]]; then
+  if diff -r "$tmp" "$OUT" >/dev/null; then
+    printf 'commands/ is up to date\n'
+  else
+    printf 'commands/ is out of date; run scripts/build\n' >&2
+    diff -ru "$OUT" "$tmp" >&2 || true
+    exit 1
+  fi
+else
+  rm -rf "$OUT"
+  cp -R "$tmp" "$OUT"
+  printf 'generated commands/ from src/commands/\n'
+fi

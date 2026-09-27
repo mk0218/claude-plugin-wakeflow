@@ -1,7 +1,6 @@
 ---
 description: task 서브커맨드 목록과 각각의 용법을 보여준다
 ---
-<!-- generated from src/commands/task/help.md by scripts/build; edit the source, not this file -->
 
 # /task:help — task subcommand guide
 

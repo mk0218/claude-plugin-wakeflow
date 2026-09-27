@@ -1,6 +1,7 @@
 ---
 description: task를 종료한다 (압축 노트 SUMMARY + 원본을 archive 폴더로 보존)
 ---
+<!-- generated from src/commands/task/end.md by scripts/build; edit the source, not this file -->
 
 # /task:end [<slug>] — end a task (compressed note + preserve the original in archive)
 

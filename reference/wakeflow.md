@@ -40,20 +40,23 @@ Plugin (`${CLAUDE_PLUGIN_ROOT}`):
 - `templates/task.md` — task README template
 - `templates/issue.md` — issue template
 - `commands/task/` — task subcommands. Each doc is its own entry point (`/task:<sub>`) with the shared
-  rules **inlined** at the top: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`. (The rules —
-  worktree re-resolve, target task heuristic, readability, this-doc pointer — are maintained as SSOT
-  in the source tuning and inlined into each command when packaged; marketplace installs cannot read
-  a separate rules file via `!cat` because the plugin cache path is outside the working directory.)
+  rules **inlined** at the top: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`.
   `commands/task.md` (bare `/task`) loads the active task's context into the session — a supplement to the
   SessionStart hook, distinct from the `/task:todo` user-facing summary.
 - `commands/issue/` — issue subcommands (`create`·`start`·`list`·`help`). Each doc is its own entry
   point (`/issue:<sub>`). There is no dispatcher (`issue.md`) and no bare `/issue`.
 - `hooks/hooks.json` + `hooks-handlers/active-task.sh` — SessionStart hook; finds the task matching the current branch and injects an `[active task]` pointer into context
+- `commands/` is generated — do not edit it. The sources are `src/commands/` (a line
+  `<!-- include: <name> -->` marks where a shared rule goes) and `src/rules/` (the shared rules:
+  worktree re-resolve, target task heuristic, readability, this-doc pointer). `scripts/build`
+  regenerates `commands/`; `scripts/build --check` fails if `commands/` is out of date.
 
 ## Slash Commands
 
-Task and issue actions are direct subcommand calls — no argument dispatch:
+Task and issue actions are direct subcommand calls — no argument dispatch. The bare `/task` is not a
+dispatcher; it loads the active task's context into the session (hook supplement):
 
+- `/task` — load the active task's context into the session (a `/task:todo` alternative for context, not a report)
 - `/task:start <description>` (alias: `create`) — start a new task
 - `/task:update [<slug>]` — reflect progress in the task README (and in any subtasks)
 - `/task:tidy [<slug>]` — split one large task into work-unit subtasks
@@ -61,7 +64,6 @@ Task and issue actions are direct subcommand calls — no argument dispatch:
 - `/task:list` (`ls`) — natural-language list of in-progress tasks
 - `/task:todo` — summarize one in-progress task's status + next step
 - `/task:help` — list of task subcommands and their usage
-- `/task` — load the active task's context into the session (hook supplement)
 - `/issue:create [<summary>]` — register a new issue
 - `/issue:start <slug>` — start a task to handle the issue (the issue itself is kept)
 - `/issue:list` (`ls`) — natural-language list of issues

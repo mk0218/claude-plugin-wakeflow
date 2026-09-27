@@ -1,6 +1,7 @@
 ---
 description: 지정한 issue를 처리하기 위한 새 task를 시작한다 (issue는 유지)
 ---
+<!-- generated from src/commands/issue/start.md by scripts/build; edit the source, not this file -->
 
 # /issue:start <slug> — start a task to handle an issue
 

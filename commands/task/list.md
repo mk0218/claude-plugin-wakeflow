@@ -1,6 +1,7 @@
 ---
 description: 진행 중인 task 목록을 자연어로 보여준다 (alias ls)
 ---
+<!-- generated from src/commands/task/list.md by scripts/build; edit the source, not this file -->
 
 # /task:list — list in-progress tasks
 

@@ -1,6 +1,7 @@
 ---
 description: 새 issue를 등록한다 (요약 또는 세션 맥락에서 할 일 추출)
 ---
+<!-- generated from src/commands/issue/create.md by scripts/build; edit the source, not this file -->
 
 # /issue:create [<summary>] — register a new issue
 

@@ -1,6 +1,7 @@
 ---
 description: 진행 중인 task 하나의 현재 상태와 다음 할 일을 요약한다
 ---
+<!-- generated from src/commands/task/todo.md by scripts/build; edit the source, not this file -->
 
 # /task:todo — summarize the current task
 

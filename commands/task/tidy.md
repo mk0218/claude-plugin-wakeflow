@@ -1,6 +1,7 @@
 ---
 description: 큰 task를 독립 진행 가능한 subtask 디렉토리들로 분할한다
 ---
+<!-- generated from src/commands/task/tidy.md by scripts/build; edit the source, not this file -->
 
 # /task:tidy [<slug>] — split a large task into subtasks
 

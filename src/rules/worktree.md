@@ -1,12 +1,3 @@
----
-description: 등록된 issue 목록을 자연어로 보여준다 (alias ls)
----
-<!-- generated from src/commands/issue/list.md by scripts/build; edit the source, not this file -->
-
-# /issue:list — list issues
-
-Apply the shared rule below first (injected once at entry, SSOT).
-
 **Worktree rule** — task/issue/archive docs (`.claude/local/`'s `tasks/`·`issues/`·`archive/`) exist
 **only in the main worktree**. A linked worktree (created via `git worktree add`) is usually branched
 off a ref that predates these docs, so its own copy is stale or absent. Therefore, when the current
@@ -20,14 +11,3 @@ own path.
 
 This rule applies even when a subcommand is invoked directly (`/task:update`, etc.) — every subcommand
 is its own entry point.
-
-For concepts, directory layout, relationships, and operating principles, read
-`${CLAUDE_PLUGIN_ROOT}/reference/wakeflow.md` first — skip if it's already in context.
-
-Read `<project-root>/.claude/local/issues/_INDEX.md` and summarize in natural language. **If the file
-does not exist, report no issues** (not an error). For each issue:
-
-- One-line summary
-- Show the slug in backticks as a secondary marker
-
-If there are no issues, just say so briefly.

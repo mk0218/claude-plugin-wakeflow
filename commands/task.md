@@ -1,6 +1,7 @@
 ---
 description: 진행 중인 task의 맥락을 현재 세션에 명시적으로 주입한다
 ---
+<!-- generated from src/commands/task.md by scripts/build; edit the source, not this file -->
 
 # /task — load the current task's context
 

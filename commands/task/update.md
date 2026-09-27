@@ -1,6 +1,7 @@
 ---
 description: task의 진행 상황(TODO·결정·로그 등)을 README에 반영한다
 ---
+<!-- generated from src/commands/task/update.md by scripts/build; edit the source, not this file -->
 
 # /task:update [<slug>] — reflect progress into the task README
 

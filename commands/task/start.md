@@ -1,6 +1,7 @@
 ---
 description: 새 task를 시작한다 (설명→slug·개요 합의 후 README 생성; alias create)
 ---
+<!-- generated from src/commands/task/start.md by scripts/build; edit the source, not this file -->
 
 # /task:start <description> (alias: create) — start a new task
 

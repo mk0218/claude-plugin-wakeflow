@@ -59,6 +59,25 @@ printf '/.claude/local/\n' >> .git/info/exclude
 > `.gitignore`가 아니라 `.git/info/exclude`를 쓰는 이유:
 > - `.gitignore`는 git repo의 관리 대상 파일인 반면 `.git/info/exclude`는 로컬에만 적용됨.
 
+## 개발: 커맨드 수정
+
+`commands/`는 생성물이므로 직접 수정하지 않는다. 원본은 `src/commands/`(커맨드)와 `src/rules/`(여러 커맨드가
+공유하는 규칙)이며, 커맨드 원본의 `<!-- include: <이름> -->` 줄이 `src/rules/<이름>.md` 본문으로 치환된다.
+
+```
+scripts/build           # src/ → commands/ 생성
+scripts/build --check   # commands/가 원본과 어긋나면 실패
+```
+
+원본을 고친 뒤 `scripts/build`를 실행하고, 생성된 `commands/`도 함께 커밋한다.
+GitHub Actions(`.github/workflows/build-check.yml`)가 PR과 main push마다 `scripts/build --check`를 실행한다.
+
+커밋 시점에도 같은 검사를 하려면 clone마다 한 번 pre-commit hook을 켠다.
+
+```
+git config core.hooksPath .githooks
+```
+
 ## (선택) 자연어 트리거
 
 wakeflow의 기본 사용 방침은 슬래시 커맨드를 통한 명시적 호출이다.
