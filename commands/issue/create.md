@@ -1,16 +1,17 @@
 ---
 description: 새 issue를 등록한다 (요약 또는 세션 맥락에서 할 일 추출)
 ---
+<!-- generated from src/commands/issue/create.md by scripts/build; edit the source, not this file -->
 
 # /issue:create [<summary>] — register a new issue
 
 Apply the shared rule below first (injected once at entry, SSOT).
 
-**Worktree rule** — task/issue/archive docs (`.claude/local/`'s `tasks/`·`issues/`·`archive/`) exist
+**Worktree rule** — task/issue/archive docs (`.wakeflow/`'s `tasks/`·`issues/`·`archive/`) exist
 **only in the main worktree**. A linked worktree (created via `git worktree add`) is usually branched
 off a ref that predates these docs, so its own copy is stale or absent. Therefore, when the current
 working directory is a linked worktree, re-resolve `<project-root>` to the **main worktree** (the first
-entry of `git worktree list`) and read/write under that `.claude/local/` — never the linked worktree's
+entry of `git worktree list`) and read/write under that `.wakeflow/` — never the linked worktree's
 own path.
 
 - Read-side (`list`·`update`·`todo`): re-resolve **before** locating the task. Otherwise you read the
@@ -40,8 +41,9 @@ For concepts, directory layout, relationships, and operating principles, read
 2. From the extracted/summarized content, organize title, background, to-dos, and references, show them
    to the user, and propose an English slug (kebab-case, short and clear).
 3. After the user confirms:
-   - Using `${CLAUDE_PLUGIN_ROOT}/templates/issue.md` as reference, create `<project-root>/.claude/local/issues/<slug>.md`
-   - Add one line to `<project-root>/.claude/local/issues/_INDEX.md` (slug, registration date, one-line summary)
-4. If this was split off from an in-progress task (`.claude/local/tasks/`) or a task already ended and
-   moved to archive (`.claude/local/archive/`), record the exact source as `task:<slug>` and briefly
+   - Using `${CLAUDE_PLUGIN_ROOT}/templates/issue.md` as reference, create `<project-root>/.wakeflow/issues/<slug>.md`
+   - Add one line to `<project-root>/.wakeflow/issues/_INDEX.md` (slug, registration date, one-line summary)
+   - If `<project-root>/.wakeflow/` did not exist before this write, this is the first wakeflow data in the project: afterwards, tell the user that `/wakeflow:tools:setup` sets up git exclusion and natural-language triggers, and offer to run it.
+4. If this was split off from an in-progress task (`.wakeflow/tasks/`) or a task already ended and
+   moved to archive (`.wakeflow/archive/`), record the exact source as `task:<slug>` and briefly
    confirm with the user that the issue exists independently of the task.

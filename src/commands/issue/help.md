@@ -1,7 +1,6 @@
 ---
 description: issue 서브커맨드 목록과 각각의 용법을 보여준다
 ---
-<!-- generated from src/commands/issue/help.md by scripts/build; edit the source, not this file -->
 
 # /issue:help — issue subcommand guide
 

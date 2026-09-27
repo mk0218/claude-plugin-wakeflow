@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Refuse the commit when the staged commands/ is out of date with the staged src/.
+# Enable once per clone: git config core.hooksPath .githooks
+set -euo pipefail
+
+staged="$(mktemp -d)"
+trap 'rm -rf "$staged"' EXIT
+
+git checkout-index --all --prefix="$staged/"
+"$staged/scripts/build" --check

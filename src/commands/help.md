@@ -1,7 +1,6 @@
 ---
 description: wakeflow 개요와 task·issue·tools 서브커맨드 목록을 보여준다
 ---
-<!-- generated from src/commands/help.md by scripts/build; edit the source, not this file -->
 
 # /wakeflow:help — wakeflow command guide
 

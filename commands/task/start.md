@@ -1,16 +1,17 @@
 ---
 description: 새 task를 시작한다 (설명→slug·개요 합의 후 README 생성; alias create)
 ---
+<!-- generated from src/commands/task/start.md by scripts/build; edit the source, not this file -->
 
 # /task:start <description> (alias: create) — start a new task
 
 Apply the shared rules below first (injected once at entry, SSOT).
 
-**Worktree rule** — task/issue/archive docs (`.claude/local/`'s `tasks/`·`issues/`·`archive/`) exist
+**Worktree rule** — task/issue/archive docs (`.wakeflow/`'s `tasks/`·`issues/`·`archive/`) exist
 **only in the main worktree**. A linked worktree (created via `git worktree add`) is usually branched
 off a ref that predates these docs, so its own copy is stale or absent. Therefore, when the current
 working directory is a linked worktree, re-resolve `<project-root>` to the **main worktree** (the first
-entry of `git worktree list`) and read/write under that `.claude/local/` — never the linked worktree's
+entry of `git worktree list`) and read/write under that `.wakeflow/` — never the linked worktree's
 own path.
 
 - Read-side (`list`·`update`·`todo`): re-resolve **before** locating the task. Otherwise you read the
@@ -34,7 +35,7 @@ it (`end` falls through to its unregistered branch).
 
 For `end`, the confirmation message must **always include the option *"위 어느 task도 아님 (미등록 task로
 처리)"*** so the user can fall through — even when there is only a single task. If
-`<project-root>/.claude/local/tasks/` is empty → the unregistered branch.
+`<project-root>/.wakeflow/tasks/` is empty → the unregistered branch.
 
 **Readability rule** — task/issue/archive documents are read by a human in a markdown viewer, not
 just stored. Optimize the *rendered* view for scanning, even when it makes the raw markdown denser.
@@ -55,8 +56,9 @@ For concepts, directory layout, relationships, and operating principles, read
 
 1. From `<description>`, **briefly summarize the task's requirements (goal & scope)** and propose an English slug (kebab-case, short and clear).
 2. Let the user supplement/revise the outline, then **confirm the outline and slug together**.
-3. Read `<project-root>/.claude/local/issues/_INDEX.md` and automatically check for open issues matching the confirmed outline. **If the index file does not exist, treat it as no open issues** (do not error). If there is a match, ask the user whether to use it as a seed; **if there is no match, silently pass** (do not report it).
+3. Read `<project-root>/.wakeflow/issues/_INDEX.md` and automatically check for open issues matching the confirmed outline. **If the index file does not exist, treat it as no open issues** (do not error). If there is a match, ask the user whether to use it as a seed; **if there is no match, silently pass** (do not report it).
 4. Using `${CLAUDE_PLUGIN_ROOT}/templates/task.md` as reference, agree on the outline of each README section with the user — **propose briefly first → create the file only after the user revises/approves**. For sections marked `(선택)` (`배경`, `PR 분할`, `메모`), confirm with the user whether to include them based on task size.
-5. Create `<project-root>/.claude/local/tasks/<slug>/README.md` with the agreed content (keep the template format). **Before writing, re-resolve `<project-root>` per the worktree rule above.** **A single file is the default.** If a large task is expected, some sections may be split into separate files (e.g. `TODO.md`) from the start.
+5. Create `<project-root>/.wakeflow/tasks/<slug>/README.md` with the agreed content (keep the template format). **Before writing, re-resolve `<project-root>` per the worktree rule above.** **A single file is the default.** If a large task is expected, some sections may be split into separate files (e.g. `TODO.md`) from the start.
+   - If `<project-root>/.wakeflow/` did not exist before this write, this is the first wakeflow data in the project: afterwards, tell the user that `/wakeflow:tools:setup` sets up git exclusion and natural-language triggers, and offer to run it.
    - Record the related branch under the front matter `branches`. If the current git branch already belongs to this task, fill it in automatically; otherwise leave a placeholder and the user fills it in once the branch is created.
 6. If there is a seed issue, reflect its content in the relevant items under the README "배경" and record the issue slug under "관련 issue".

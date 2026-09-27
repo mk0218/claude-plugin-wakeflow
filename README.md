@@ -16,6 +16,9 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 /plugin install wakeflow
 ```
 
+설치 후 wakeflow를 쓸 레포에서 `/wakeflow:tools:setup`을 실행하면 git 제외와 자연어 트리거를 항목마다 확인하며
+설정한다. 설정을 되돌리려면 `/wakeflow:tools:cleanup`을 실행한다. setup을 실행하지 않아도, 레포에서 처음 task나 issue를 만들 때 setup을 제안한다.
+
 ## 사용 방법
 
 필요시 명시적으로 슬래시 커맨드를 실행한다.
@@ -46,36 +49,54 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 | `/wakeflow:issue:start <slug>` | issue 처리용 새 task 시작 |
 | `/wakeflow:issue:list` (`ls`) | issue 목록 |
 
+### tools — 설치·이전 보조
+
+| 커맨드 | 설명 |
+|---|---|
+| `/wakeflow:tools:setup` | 사용 환경 설정 (git 제외·자연어 트리거, 항목마다 확인) |
+| `/wakeflow:tools:cleanup` | setup이 추가한 설정 제거 (항목마다 확인) |
+| `/wakeflow:tools:migrate` | 옛 위치(`.claude/local/`)의 데이터를 `.wakeflow/`로 이동 |
+
+예전 버전에서 `.claude/local/`에 쌓인 데이터가 있으면 세션 시작 시 훅이 알려 주고, Claude가 migrate 실행을 제안한다.
+
 ## task/issue 데이터의 git 무시 (권장)
 
-task/issue/archive 문서는 프로젝트의 `<project-root>/.claude/local/` 아래에 쌓인다. 이 개인 작업 문서를
-팀 레포 히스토리에 올리고 싶지 않다면, `.gitignore` 또는 `.git/local/exclude`(권장)에 추가한다.
+task/issue/archive 문서는 프로젝트의 `<project-root>/.wakeflow/` 아래에 쌓인다. 이 개인 작업 문서를
+팀 레포 히스토리에 올리고 싶지 않다면 git에서 제외한다. `/wakeflow:tools:setup`이 전역 제외 파일
+(`core.excludesFile`, 기본 `~/.config/git/ignore`) 또는 레포의 `.git/info/exclude` 중 고른 곳에 추가해 준다.
+직접 추가할 경우:
 
 ```
-printf '/.claude/local/\n' >> .git/info/exclude
+printf '.wakeflow/\n' >> ~/.config/git/ignore     # 모든 레포
+printf '.wakeflow/\n' >> .git/info/exclude        # 이 레포만
 ```
 
 > [!NOTE]
-> `.gitignore`가 아니라 `.git/info/exclude`를 쓰는 이유:
-> - `.gitignore`는 git repo의 관리 대상 파일인 반면 `.git/info/exclude`는 로컬에만 적용됨.
+> `.gitignore`가 아니라 위 두 파일을 쓰는 이유:
+> - `.gitignore`는 git repo의 관리 대상 파일인 반면 두 파일은 로컬에만 적용됨.
+
+## 개발: 커맨드 수정
+
+`commands/`는 생성물이므로 직접 수정하지 않는다. 원본은 `src/commands/`(커맨드)와 `src/rules/`(여러 커맨드가
+공유하는 규칙)이며, 커맨드 원본의 `<!-- include: <이름> -->` 줄이 `src/rules/<이름>.md` 본문으로 치환된다.
+
+```
+scripts/build           # src/ → commands/ 생성
+scripts/build --check   # commands/가 원본과 어긋나면 실패
+```
+
+원본을 고친 뒤 `scripts/build`를 실행하고, 생성된 `commands/`도 함께 커밋한다.
+GitHub Actions(`.github/workflows/build-check.yml`)가 PR과 main push마다 `scripts/build --check`를 실행한다.
+
+커밋 시점에도 같은 검사를 하려면 clone마다 한 번 pre-commit hook을 켠다.
+
+```
+git config core.hooksPath .githooks
+```
 
 ## (선택) 자연어 트리거
 
 wakeflow의 기본 사용 방침은 슬래시 커맨드를 통한 명시적 호출이다.
-슬래시 커맨드 없이 자연어로도 워크플로를 발동하고 싶다면, 프로젝트 또는 전역
-`CLAUDE.md`에 아래 스니펫을 추가한다. (플러그인은 자연어 자동 발동을 강제하지 않는다 —
-"명시적 요청 없이는 시작하지 않는다"는 방침과 충돌하지 않도록 사용자가 직접 켠다.)
-
-```markdown
-## wakeflow 자연어 트리거
-
-아래 의도가 감지되면 사용자에게 해당 커맨드 실행 여부를 물어보고, 확인 시 실행한다.
-
-| 의도 (한국어) | 커맨드 |
-|---|---|
-| "task로 시작하자", "이거 작업 시작", "X 만들어볼게" | /wakeflow:task:start |
-| "지금까지 한 거 task에 정리", "진행 상황 업데이트" | /wakeflow:task:update |
-| "task 마무리", "끝났어", "정리해줘" | /wakeflow:task:end |
-| "이건 따로 빼자", "issue로 등록", "나중에 처리" | /wakeflow:issue:create |
-| "이슈 목록", "할 일 뭐 있지" | /wakeflow:issue:list |
-```
+슬래시 커맨드 없이 자연어로도 워크플로를 발동하고 싶다면 `/wakeflow:tools:setup`으로 `~/.claude/CLAUDE.md`에
+트리거 블록을 추가한다. (플러그인은 자연어 자동 발동을 강제하지 않는다 — "명시적 요청 없이는 시작하지 않는다"는
+방침과 충돌하지 않도록 사용자가 직접 켠다.) 넣는 내용은 `src/commands/tools/setup.md`에 있다.

@@ -16,10 +16,10 @@ Personal work is managed as Tasks (in-progress units) and Issues (split-off to-d
 ## Directory Layout
 
 Task docs live only in the **main worktree**. Linked worktrees (from `git worktree add`) branch off a ref
-that usually predates these docs, so their own `.claude/local/tasks/` is stale or absent — always resolve
+that usually predates these docs, so their own `.wakeflow/tasks/` is stale or absent — always resolve
 the main worktree (first entry of `git worktree list`) and read/write task docs there.
 
-Per-project (`<project-root>/.claude/local/`):
+Per-project (`<project-root>/.wakeflow/`):
 
 - `tasks/<slug>/` — directory for an in-progress task
   - `README.md` — task body (default). Split incrementally into separate files (`TODO.md`, `PR.md`, `NOTES.md`, etc.) as sections grow large.
@@ -28,11 +28,6 @@ Per-project (`<project-root>/.claude/local/`):
 - `issues/_INDEX.md` — issue index
 - `archive/<slug>/` — finished task folder — compressed notes `SUMMARY.md` + original doc `ARCHIVED.md` (subtask directories move here too if the task was a branch)
 - `archive/_ARCHIVE.md` — archive index
-- `docs/` — read-only reference material (domain/backend/frontend notes, etc.), **not task/issue/archive
-  data**. Unlike the above, may exist independently per worktree — a linked worktree can have docs the
-  main worktree lacks. Always check both the current and main worktree's `docs/` when looking something
-  up here; if a doc exists only in the current (linked) worktree, flag it as worktree-local rather than
-  shared.
 
 Plugin (`${CLAUDE_PLUGIN_ROOT}`):
 
@@ -40,20 +35,27 @@ Plugin (`${CLAUDE_PLUGIN_ROOT}`):
 - `templates/task.md` — task README template
 - `templates/issue.md` — issue template
 - `commands/task/` — task subcommands. Each doc is its own entry point (`/task:<sub>`) with the shared
-  rules **inlined** at the top: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`. (The rules —
-  worktree re-resolve, target task heuristic, readability, this-doc pointer — are maintained as SSOT
-  in the source tuning and inlined into each command when packaged; marketplace installs cannot read
-  a separate rules file via `!cat` because the plugin cache path is outside the working directory.)
+  rules **inlined** at the top: `start`·`update`·`tidy`·`end`·`list`·`todo`·`help`.
   `commands/task.md` (bare `/task`) loads the active task's context into the session — a supplement to the
   SessionStart hook, distinct from the `/task:todo` user-facing summary.
 - `commands/issue/` — issue subcommands (`create`·`start`·`list`·`help`). Each doc is its own entry
   point (`/issue:<sub>`). There is no dispatcher (`issue.md`) and no bare `/issue`.
+- `commands/tools/` — auxiliary commands, not task/issue actions: `setup` (apply git exclusion of
+  `.wakeflow/` and the natural-language trigger block in `~/.claude/CLAUDE.md`), `cleanup` (remove what
+  `setup` added), and `migrate` (move legacy data from `.claude/local/` to `.wakeflow/`).
 - `hooks/hooks.json` + `hooks-handlers/active-task.sh` — SessionStart hook; finds the task matching the current branch and injects an `[active task]` pointer into context
+- `hooks-handlers/legacy-data.sh` — SessionStart hook; if legacy data remains under `.claude/local/`, injects a notice to offer `/wakeflow:tools:migrate`
+- `commands/` is generated — do not edit it. The sources are `src/commands/` (a line
+  `<!-- include: <name> -->` marks where a shared rule goes) and `src/rules/` (the shared rules:
+  worktree re-resolve, target task heuristic, readability, this-doc pointer, setup markers). `scripts/build`
+  regenerates `commands/`; `scripts/build --check` fails if `commands/` is out of date.
 
 ## Slash Commands
 
-Task and issue actions are direct subcommand calls — no argument dispatch:
+Task and issue actions are direct subcommand calls — no argument dispatch. The bare `/task` is not a
+dispatcher; it loads the active task's context into the session (hook supplement):
 
+- `/task` — load the active task's context into the session (a `/task:todo` alternative for context, not a report)
 - `/task:start <description>` (alias: `create`) — start a new task
 - `/task:update [<slug>]` — reflect progress in the task README (and in any subtasks)
 - `/task:tidy [<slug>]` — split one large task into work-unit subtasks
@@ -61,13 +63,15 @@ Task and issue actions are direct subcommand calls — no argument dispatch:
 - `/task:list` (`ls`) — natural-language list of in-progress tasks
 - `/task:todo` — summarize one in-progress task's status + next step
 - `/task:help` — list of task subcommands and their usage
-- `/task` — load the active task's context into the session (hook supplement)
 - `/issue:create [<summary>]` — register a new issue
 - `/issue:start <slug>` — start a task to handle the issue (the issue itself is kept)
 - `/issue:list` (`ls`) — natural-language list of issues
 - `/issue:help` — list of issue subcommands and their usage
+- `/tools:setup` — apply the environment setup (asks per item)
+- `/tools:cleanup` — remove what `/tools:setup` added (asks per item)
+- `/tools:migrate` — move legacy data from `.claude/local/` to `.wakeflow/`
 
-Detailed behavior of each subcommand is in `${CLAUDE_PLUGIN_ROOT}/commands/task/<sub>.md` and `${CLAUDE_PLUGIN_ROOT}/commands/issue/<sub>.md`.
+Detailed behavior of each subcommand is in `${CLAUDE_PLUGIN_ROOT}/commands/{task,issue,tools}/<sub>.md`.
 
 ## Operating Principles
 
