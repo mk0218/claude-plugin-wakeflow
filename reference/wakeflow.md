@@ -40,10 +40,13 @@ Plugin (`${CLAUDE_PLUGIN_ROOT}`):
   SessionStart hook, distinct from the `/task:todo` user-facing summary.
 - `commands/issue/` — issue subcommands (`create`·`start`·`list`·`help`). Each doc is its own entry
   point (`/issue:<sub>`). There is no dispatcher (`issue.md`) and no bare `/issue`.
+- `commands/tools/` — auxiliary commands, not task/issue actions: `setup` (apply git exclusion of
+  `.wakeflow/` and the natural-language trigger block in `~/.claude/CLAUDE.md`), `cleanup` (remove what
+  `setup` added), and `migrate` (move legacy data from `.claude/local/` to `.wakeflow/`).
 - `hooks/hooks.json` + `hooks-handlers/active-task.sh` — SessionStart hook; finds the task matching the current branch and injects an `[active task]` pointer into context
 - `commands/` is generated — do not edit it. The sources are `src/commands/` (a line
   `<!-- include: <name> -->` marks where a shared rule goes) and `src/rules/` (the shared rules:
-  worktree re-resolve, target task heuristic, readability, this-doc pointer). `scripts/build`
+  worktree re-resolve, target task heuristic, readability, this-doc pointer, setup markers). `scripts/build`
   regenerates `commands/`; `scripts/build --check` fails if `commands/` is out of date.
 
 ## Slash Commands
@@ -63,8 +66,11 @@ dispatcher; it loads the active task's context into the session (hook supplement
 - `/issue:start <slug>` — start a task to handle the issue (the issue itself is kept)
 - `/issue:list` (`ls`) — natural-language list of issues
 - `/issue:help` — list of issue subcommands and their usage
+- `/tools:setup` — apply the environment setup (asks per item)
+- `/tools:cleanup` — remove what `/tools:setup` added (asks per item)
+- `/tools:migrate` — move legacy data from `.claude/local/` to `.wakeflow/`
 
-Detailed behavior of each subcommand is in `${CLAUDE_PLUGIN_ROOT}/commands/task/<sub>.md` and `${CLAUDE_PLUGIN_ROOT}/commands/issue/<sub>.md`.
+Detailed behavior of each subcommand is in `${CLAUDE_PLUGIN_ROOT}/commands/{task,issue,tools}/<sub>.md`.
 
 ## Operating Principles
 

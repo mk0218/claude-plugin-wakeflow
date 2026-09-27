@@ -1,5 +1,5 @@
 ---
-description: wakeflow 개요와 task·issue 서브커맨드 목록을 보여준다
+description: wakeflow 개요와 task·issue·tools 서브커맨드 목록을 보여준다
 ---
 <!-- generated from src/commands/help.md by scripts/build; edit the source, not this file -->
 
@@ -27,4 +27,10 @@ wakeflow — 개인 작업을 진행 중 task와 나중에 처리할 issue로 �
 • /wakeflow:issue:start <slug>     지정 issue 처리용 새 task 시작 (issue는 유지)
 • /wakeflow:issue:list (ls)        등록된 issue 목록
 • /wakeflow:issue:help            issue 서브커맨드 상세 목록
+
+[tools] 설치·이전 보조
+
+• /wakeflow:tools:setup            사용 환경 설정 (git 제외·자연어 트리거, 항목마다 확인)
+• /wakeflow:tools:cleanup          setup이 추가한 설정 제거 (항목마다 확인)
+• /wakeflow:tools:migrate          옛 위치(.claude/local/)의 데이터를 .wakeflow/로 이동
 ```
