@@ -13,12 +13,10 @@ Apply the shared rules below first (injected once at entry, SSOT).
 <!-- include: wakeflow-ref -->
 
 Primary purpose: **load the task into Claude's working context**, not to produce a user-facing report.
-The SessionStart hook (`active-task.sh`) already injects a one-line pointer, but a long session drifts
-or the pointer alone is thin — this command re-grounds the session by actually reading the task.
+A long session drifts — this command re-grounds the session by actually reading the task.
 For a user-facing "status + next step" summary, use `/task:todo` instead.
 
-1. **Pick the target task** — if the hook injected an `[active task] … (slug) … README: <path>`
-   pointer, use it. Otherwise fall back to the target task heuristic's slug-omitted path
+1. **Pick the target task** — use the target task heuristic's slug-omitted path
    (branch match → list in-progress tasks). If a slug argument is given, use that task.
 2. **Read the README fully** — read the target task's whole README (background, decisions, open
    questions, TODO, log), not just the summary lines. This is the point: absorb it as context for the
