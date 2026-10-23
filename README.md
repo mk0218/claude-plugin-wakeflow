@@ -22,7 +22,6 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 ## 사용 방법
 
 필요시 명시적으로 슬래시 커맨드를 실행한다.
-`SessionStart` 훅이 현재 git 브랜치에 연결된 task를 찾아 컨텍스트로 자동 주입한다.
 
 ### task — 진행 중인 작업 단위
 
@@ -36,7 +35,7 @@ task/issue 기반 개인 작업 흐름을 관리하는 Claude Code 플러그인.
 | `/wakeflow:task:end [slug]` | task 종료 (압축 노트 + archive 보존) |
 | `/wakeflow:task:list` (`ls`) | 진행 중인 task 목록 |
 | `/wakeflow:task:todo` | 현재 task 상태 + 다음 할 일 요약 |
-| `/wakeflow:task` | 현재 task 맥락을 세션에 주입 (hook 보강) |
+| `/wakeflow:task` | 현재 task 맥락을 세션에 주입 |
 
 ### issue — 분리해 둔 할 일
 
